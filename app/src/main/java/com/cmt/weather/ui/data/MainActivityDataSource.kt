@@ -6,6 +6,7 @@ import com.cmt.weather.network.NetworkResult
 import com.cmt.weather.ui.data.model.CityListRep
 import com.cmt.weather.ui.data.model.CurrentInfoParser
 import com.cmt.weather.ui.data.model.ForeCastInfoParser
+import com.cmt.weather.ui.data.model.HistoryInfoParser
 import com.cmt.weather.utils.AppConstants
 import com.google.gson.Gson
 import retrofit2.Call
@@ -77,6 +78,32 @@ class MainActivityDataSource {
                 }
             }
             override fun onFailure(call: Call<ForeCastInfoParser>, t: Throwable) {
+                res.invoke(NetworkResult.Error(Exception(t)))
+            }
+        })
+    }
+
+    fun fetchHistoryInfo(locationId: String, res: (NetworkResult<HistoryInfoParser>) -> Unit) {
+        val url = AppConstants.sampleBaseUrl + "forecast/daily?id=$locationId&APPID=${AppConstants.appKey}"
+        val apiCall: Call<HistoryInfoParser> =
+            apiRequest.getHistoryInfo(url)
+        apiCall.enqueue(object : Callback<HistoryInfoParser> {
+            override fun onResponse(
+                call: Call<HistoryInfoParser>,
+                response: Response<HistoryInfoParser>
+            ) {
+                try {
+                    val resBody = response.body()
+                    if(resBody != null) {
+                        res.invoke(NetworkResult.Success(resBody))
+                    } else{
+                        res.invoke(NetworkResult.Error(Exception("No Data")))
+                    }
+                } catch (e: Exception) {
+                    res.invoke(NetworkResult.Error(Exception(e)))
+                }
+            }
+            override fun onFailure(call: Call<HistoryInfoParser>, t: Throwable) {
                 res.invoke(NetworkResult.Error(Exception(t)))
             }
         })

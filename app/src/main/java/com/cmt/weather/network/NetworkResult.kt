@@ -1,7 +1,5 @@
 package com.cmt.weather.network
 
-import com.cmt.weather.ui.data.model.CurrentInfoParser
-
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>

@@ -10,11 +10,11 @@ import com.cmt.weather.R
 import com.cmt.weather.databinding.ForecastHistoryItemBinding
 import java.util.*
 
-class ForeCastAdapter(
+class HistoryAdapter(
     private val context : Context,
-    private val mDataList: List<ForeCastResultView>
+    private val mDataList: List<HistoryResultView>
 ) :
-    RecyclerView.Adapter<ForeCastAdapter.ViewHolder>() {
+    RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,

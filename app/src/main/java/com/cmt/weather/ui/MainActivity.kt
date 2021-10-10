@@ -32,19 +32,21 @@ class MainActivity : AppCompatActivity() {
         val tvWindPressure = activityMainBinding.tvWindPressure
         val tvHumidity = activityMainBinding.tvHumidity
         val tvForeCastLabel = activityMainBinding.tvForeCastLabel
-//        val tvHistoryLabel = activityMainBinding.tvHistoryLabel
+        val tvHistoryLabel = activityMainBinding.tvHistoryLabel
+        val progressContainer = activityMainBinding.progressContainer
         val rvForeCast = activityMainBinding.rvForeCast
         val horizontalForeCast = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         rvForeCast.layoutManager = horizontalForeCast
-//        val rvHistory = activityMainBinding.rvHistory
-//        val horizontalHstory = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-//        rvHistory.layoutManager = horizontalHstory
+        val rvHistory = activityMainBinding.rvHistory
+        val horizontalHistory = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        rvHistory.layoutManager = horizontalHistory
 
         // ViewModel Init
         val activityViewModel = ViewModelProvider(this, MainActivityViewModelFactory())
             .get(MainActivityViewModel::class.java)
 
         // Loading city list initially
+        progressContainer.visibility = View.VISIBLE
         activityViewModel.loadCities()
 
         // City List Event Trigger
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                 val isConnected = ConnectionDetector.isNetworkConnected(applicationContext)
                 activityViewModel.setConnectivityLost(!isConnected)
                 if (isConnected) {
+                    progressContainer.visibility = View.VISIBLE
                     activityViewModel.fetchCityCurrentInfo("$cityName,$cityCountry")
                 }
             }
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         // City List loads in spinner after receiving from view model
         activityViewModel.getCityList.observe(this, Observer { cities ->
+            progressContainer.visibility = View.GONE
             val cityList = cities ?: return@Observer
             val strCityArr = activityViewModel.strGetCityList.value ?: ArrayList()
             val arrayAdapter =
@@ -75,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             val isConnected = ConnectionDetector.isNetworkConnected(applicationContext)
             activityViewModel.setConnectivityLost(!isConnected)
             if (isConnected) {
+                progressContainer.visibility = View.VISIBLE
                 activityViewModel.fetchCityCurrentInfo(location)
             }
         })
@@ -91,7 +96,14 @@ class MainActivity : AppCompatActivity() {
         activityViewModel.fetchCurrentInfo.observe(this, Observer { response ->
             val result = response ?: return@Observer
             if (result.success != null) {
+
+                // Fetching Forecast based on City Id
                 activityViewModel.fetchForeCastInfo(result.success.cityId)
+
+                // Fetching History based on City Id
+                activityViewModel.fetchHistoryInfo(result.success.date, result.success.cityId)
+
+                // Loading Current API data in views
                 tvWeatherCondition.text = String.format(
                     Locale.getDefault(),
                     getString(R.string.weather_condition_s),
@@ -124,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             if (result.error != null) {
+                progressContainer.visibility = View.GONE
                 showToast(result.error)
             }
         })
@@ -142,11 +155,43 @@ class MainActivity : AppCompatActivity() {
                     val foreCastAdapter = ForeCastAdapter(this, foreCastList)
                     rvForeCast.adapter = foreCastAdapter
                 }
+            } else {
+                tvForeCastLabel.visibility = View.GONE
+                rvForeCast.visibility = View.GONE
             }
+
             if (result.error != null) {
+                progressContainer.visibility = View.GONE
                 showToast(result.error)
             }
         })
+
+        // Fetched Forecast data obtained from API
+        activityViewModel.fetchHistoryResult.observe(this, Observer { response ->
+            progressContainer.visibility = View.GONE
+            val result = response ?: return@Observer
+            if (result.success != null) {
+                val historyResult = result.success
+                if(historyResult.isEmpty()){
+                    tvHistoryLabel.visibility = View.GONE
+                    rvHistory.visibility = View.GONE
+                } else {
+                    tvHistoryLabel.visibility = View.VISIBLE
+                    rvHistory.visibility = View.VISIBLE
+                    val historyAdapter = HistoryAdapter(this, historyResult)
+                    rvHistory.adapter = historyAdapter
+                }
+            } else {
+                tvHistoryLabel.visibility = View.GONE
+                rvHistory.visibility = View.GONE
+            }
+
+            if (result.error != null) {
+                progressContainer.visibility = View.GONE
+                showToast(result.error)
+            }
+        })
+
     }
 
 
