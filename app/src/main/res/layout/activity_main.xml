@@ -6,14 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/tvCityPopup"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_a_city"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="60dp"
+        android:text="@string/select_a_city"
+        app:layout_constraintBottom_toTopOf="@+id/tvMaxTemp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/cityDrop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintLeft_toRightOf="@+id/tvCityLabel"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMaxTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/max_temperature"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cityDrop" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMinTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/min_temperature"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMaxTemp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvWindPressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/wind_pressure"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMinTemp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/humidity"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvWindPressure" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,6 @@ class ConnectionDetector {
 
     companion object {
 
-        @RequiresApi(Build.VERSION_CODES.M)
         fun isNetworkConnected(context: Context): Boolean {
 
             val connectivityManager =

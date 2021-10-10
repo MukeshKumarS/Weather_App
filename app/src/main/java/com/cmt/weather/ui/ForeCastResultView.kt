@@ -1,11 +1,9 @@
 package com.cmt.weather.ui
 
-data class CurrentInfoResultView (
+data class ForeCastResultView (
     val cityName: String,
-    val cityId: String,
-    val date: String,
     val maxTemp: Float,
     val minTemp: Float,
     val windPressure: Int,
-    val humidity: Int,
+    val Humidity: Int,
 )

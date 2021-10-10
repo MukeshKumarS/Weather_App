@@ -8,7 +8,6 @@ import com.cmt.weather.ui.data.model.CurrentInfoParser
 import com.cmt.weather.ui.data.model.ForeCastInfoParser
 import com.cmt.weather.utils.AppConstants
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +27,7 @@ class MainActivityDataSource {
     }
 
     fun fetchCurrentInfo(location: String, res: (NetworkResult<CurrentInfoParser>) -> Unit) {
-        val url = AppConstants.apiBaseUrl + "weather?q="+location +"&APPID="+ AppConstants.appKey
+        val url = AppConstants.apiBaseUrl + "weather?q=$location&APPID=${AppConstants.appKey}"
 //        val apiCall: Call<CurrentInfoParser> =
 //            apiRequest.getCurrentInfo(location, AppConstants.appKey)
         val apiCall: Call<CurrentInfoParser> =
@@ -55,8 +54,8 @@ class MainActivityDataSource {
         })
     }
 
-    fun fetchForeCastInfo(locationId: Int, res: (NetworkResult<ForeCastInfoParser>) -> Unit) {
-        val url = AppConstants.sampleBaseUrl + "forecast/daily?id="+locationId +"&APPID="+ AppConstants.appKey
+    fun fetchForeCastInfo(locationId: String, res: (NetworkResult<ForeCastInfoParser>) -> Unit) {
+        val url = AppConstants.sampleBaseUrl + "forecast/daily?id=$locationId&APPID=${AppConstants.appKey}"
 //        val apiCall: Call<CurrentInfoParser> =
 //            apiRequest.getCurrentInfo(location, AppConstants.appKey)
         val apiCall: Call<ForeCastInfoParser> =

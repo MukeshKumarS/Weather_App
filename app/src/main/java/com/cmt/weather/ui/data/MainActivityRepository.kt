@@ -19,7 +19,7 @@ class MainActivityRepository(private val dataSource: MainActivityDataSource) {
         }
     }
 
-    fun fetchForeCastInfo(locationId: Int, res: (NetworkResult<ForeCastInfoParser>) -> Unit) {
+    fun fetchForeCastInfo(locationId: String, res: (NetworkResult<ForeCastInfoParser>) -> Unit) {
         dataSource.fetchForeCastInfo(locationId) { result ->
             res.invoke(result)
         }
