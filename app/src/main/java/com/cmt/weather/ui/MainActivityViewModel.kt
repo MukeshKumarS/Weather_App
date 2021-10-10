@@ -1,6 +1,5 @@
 package com.cmt.weather.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,9 +40,16 @@ class MainActivityViewModel(val activityRepository: MainActivityRepository) : Vi
         activityRepository.fetchCurrentInfo(location) { response ->
             if (response is NetworkResult.Success) {
                 val currentInfo = response.data
+                val weatherList = currentInfo.weatherData
+                var strWeather = ""
+                for(weather in weatherList){
+                    strWeather += "${weather.main}, "
+                }
+                strWeather = strWeather.substring(0, strWeather.length - 2)
                 val currentInfoResultView = CurrentInfoResultView(
                     cityName = currentInfo.cityName,
                     cityId = currentInfo.cityId.toString(),
+                    weather = strWeather,
                     date = convertMillToDate(currentInfo.dt),
                     maxTemp = currentInfo.main.temp_max,
                     minTemp = currentInfo.main.temp_min,
@@ -67,7 +73,42 @@ class MainActivityViewModel(val activityRepository: MainActivityRepository) : Vi
     fun fetchForeCastInfo(locationId: String) {
         activityRepository.fetchForeCastInfo(locationId) { response ->
             if (response is NetworkResult.Success) {
-                Log.d("Test", response.data.city.cityName)
+                val currentInfo = response.data
+                val weatherDataList = currentInfo.weatherData
+                val foreCastArrayList = ArrayList<ForeCastResultView>()
+                for (foreCastList in weatherDataList) {
+                    val weatherList = foreCastList.weatherList
+                    var strWeather = ""
+                    for (weather in weatherList) {
+                        strWeather += "${weather.main}, "
+                    }
+                    strWeather = strWeather.substring(0, strWeather.length - 2)
+                    val foreCastResultView = ForeCastResultView(
+                        cityName = currentInfo.city.cityName,
+                        cityId = currentInfo.city.geoNameId.toString(),
+                        weather = strWeather,
+                        date = convertMillToDate(foreCastList.dt),
+                        maxTemp = foreCastList.temp.max,
+                        minTemp = foreCastList.temp.min,
+                        dayTemp = foreCastList.temp.day,
+                        mornTemp = foreCastList.temp.morn,
+                        eveTemp = foreCastList.temp.eve,
+                        nightTemp = foreCastList.temp.night,
+                        windPressure = foreCastList.pressure,
+                        humidity = foreCastList.humidity
+                    )
+                    foreCastArrayList.add(foreCastResultView)
+                }
+                _fetchForeCastResult.value = ForeCastResult(success = foreCastArrayList)
+            } else {
+                if (response is NetworkResult.Error) {
+                    val error = response.exception
+                    val errorMsg = "Please try again!"
+                    if(error.message?.isNotEmpty() == true)
+                        _fetchForeCastResult.value = ForeCastResult(error = error.message ?: "Please try again")
+                    else
+                        _fetchForeCastResult.value = ForeCastResult(error = errorMsg)
+                }
             }
         }
     }

@@ -41,10 +41,10 @@ data class ForeCastInfoParser(
     data class CityWeather(
         @SerializedName("dt")
         @Expose
-        var dt: Int,
+        var dt: Long,
         @SerializedName("pressure")
         @Expose
-        var pressure: Double,
+        var pressure: Float,
         @SerializedName("speed")
         @Expose
         var speed: Float,
@@ -62,7 +62,7 @@ data class ForeCastInfoParser(
         var clouds: Int,
         @SerializedName("weather")
         @Expose
-        var weatherData: List<Weather>,
+        var weatherList: List<Weather>,
         @SerializedName("temp")
         @Expose
         var temp: CityTemperatures

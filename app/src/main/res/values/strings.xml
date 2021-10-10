@@ -3,6 +3,14 @@
     <string name="select_a_city">Select a city</string>
     <string name="max_temperature">Max Temperature : %s F</string>
     <string name="min_temperature">Min Temperature : %s F</string>
-    <string name="wind_pressure">Wind Pressure : %s</string>
-    <string name="humidity">Humidity : %s</string>
+    <string name="day_temperature">Day Temperature : %s F</string>
+    <string name="morn_temperature">Morning Temperature : %s F</string>
+    <string name="eve_temperature">Evening Temperature : %s F</string>
+    <string name="night_temperature">Night Temperature : %s F</string>
+    <string name="wind_pressure">Wind Pressure : %s hPa</string>
+    <string name="humidity">Humidity : %s percentage</string>
+    <string name="weather_condition_s">Weather Condition : %s</string>
+    <string name="current_date_s">Current Date : %s</string>
+    <string name="forecast">Forecast :</string>
+    <string name="history">History :</string>
 </resources>

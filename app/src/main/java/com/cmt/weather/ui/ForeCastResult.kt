@@ -1,6 +1,6 @@
 package com.cmt.weather.ui
 
 data class ForeCastResult(
-    val success: CurrentInfoResultView? = null,
+    val success: List<ForeCastResultView>? = null,
     val error: String? = null
 )

@@ -122,7 +122,7 @@ data class CurrentInfoParser(
         var temp_max: Float,
         @SerializedName("pressure")
         @Expose
-        var pressure: Int,
+        var pressure: Float,
         @SerializedName("humidity")
         @Expose
         var humidity: Int,
